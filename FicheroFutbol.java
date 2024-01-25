@@ -1,5 +1,4 @@
 import java.io.FileWriter;
-import java.nio.Buffer;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -9,6 +8,8 @@ public class FicheroFutbol {
         int resultado;
         try{    
             FileWriter f = new FileWriter("liga.dat",true);
+            // El true es para que no sobreescriba el fichero
+            // El caracter ; es para separar los datos
             f.write(nombreEquipo + ';' + partJugados + ';' + partGanados + ';' + partEmpatados + ';' + partPerdidos + ';' + puntos + ';' + "\n");
             f.close();
             resultado = 0;
@@ -27,12 +28,15 @@ public class FicheroFutbol {
             FileReader f = new FileReader("liga.dat");
             BufferedReader b = new BufferedReader(f);
 
+            // Leemos el fichero y lo mostramos por pantalla
             String linea;
             String palabra = "";
             while ((linea = b.readLine()) != null) {
                 for(int j = 0; j < linea.length(); j++){
+                    // Guardo caracter por caracter la palabra hasta que encuentra un ;
                     if(linea.charAt(j) != ';') palabra += linea.charAt(j);
 
+                    // Cuando encuentre un ; se guarda la palabra en el array y se vacia la palabra
                     if(linea.charAt(j) == ';'){ 
                     informacion[i] = palabra;
                     palabra = "";
