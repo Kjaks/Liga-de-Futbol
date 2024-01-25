@@ -4,6 +4,7 @@ public class Main{
     public static void main(String args[]){
         FicheroFutbol pd = new FicheroFutbol();
         int opcion = 0;
+        String[] informacion;
         System.out.println("Bienvenido a la Liga de Futbol");
         
         do{
@@ -23,34 +24,28 @@ public class Main{
                     addTeam();
                     break;
                 case 2:
-                    System.out.println("La tabla de la liga es la siguiente:");
+                    System.out.println("La tabla de la liga es la siguiente:\n");
                     
-                    String informacion = pd.ShowTable();
+                    informacion = pd.ShowTable();
 
-                    int longitud = 0;
-                    boolean seguir = true;
+                    System.out.print("Nombre del equipo     Jugados                  Ganados                  Empatados                Perdidos                  Puntos\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n");
 
-                    System.out.print("Nombre del equipo     Jugados     Ganados     Empatados     Perdidos     Puntos\n");
-
-                    for(int i = 0; i < informacion.length(); i++){
-                        if(informacion.charAt(i) != ' ' || informacion.charAt(i) != '\n') longitud++;
-
-                        if(informacion.charAt(i) == '\n') seguir = true;
-
-                        if (informacion.charAt(i) == ';' && seguir == true){
-                            for(int j = 0; j < 15 - longitud + 13;j++)
-                            System.out.print(" ");
-                            longitud = 0;
-                            seguir = false;
-                        } else if(informacion.charAt(i) == ';'){
-                            System.out.print("          ");
-                        } else{
-                            System.out.print(informacion.charAt(i));
-                        }   
+                    for (int i = 0; i < informacion.length; i++) {
+                        // Verifica si el índice actual es el quinto elemento en la línea
+                        if (i % 6 == 0 && informacion[i] != null && i != 0) {
+                            System.out.println();
+                            System.out.print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n");  // Salto de línea después de cada quinto elemento
                         }
 
-                    System.out.println("");
+                        if (informacion[i] != null) {
+                            System.out.printf("%-25s", informacion[i]);
                     
+
+                        }
+                    }
+
+                    System.out.println("\n");
+
                     break;
                 case 3:
                     System.out.println("Tabla ordenada por puntos:");

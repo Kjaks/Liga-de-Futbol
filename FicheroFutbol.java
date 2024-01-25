@@ -9,12 +9,6 @@ public class FicheroFutbol {
         int resultado;
         try{    
             FileWriter f = new FileWriter("liga.dat",true);
-            for(int i = 0; i < nombreEquipo.length(); i++){
-            if(nombreEquipo.charAt(i) == ' '){
-                nombreEquipo.replace(' ', '_');
-            }
-            }
-
             f.write(nombreEquipo + ';' + partJugados + ';' + partGanados + ';' + partEmpatados + ';' + partPerdidos + ';' + puntos + ';' + "\n");
             f.close();
             resultado = 0;
@@ -26,16 +20,26 @@ public class FicheroFutbol {
         return resultado;
     }
     
-    public String ShowTable(){
-        String informacion = "";
+    public String[] ShowTable() {
+        String[] informacion = new String[120];
+        int i = 0;
         try {
             FileReader f = new FileReader("liga.dat");
             BufferedReader b = new BufferedReader(f);
 
             String linea;
+            String palabra = "";
             while ((linea = b.readLine()) != null) {
-                informacion += linea + "\n";
-            }             
+                for(int j = 0; j < linea.length(); j++){
+                    if(linea.charAt(j) != ';') palabra += linea.charAt(j);
+
+                    if(linea.charAt(j) == ';'){ 
+                    informacion[i] = palabra;
+                    palabra = "";
+                    i++;
+                    }
+                }
+            } 
             
             b.close();
 
@@ -44,6 +48,5 @@ public class FicheroFutbol {
         }
 
         return informacion;
-
     }
 }
