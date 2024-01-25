@@ -9,7 +9,13 @@ public class FicheroFutbol {
         int resultado;
         try{    
             FileWriter f = new FileWriter("liga.dat",true);
-            f.write(nombreEquipo + ';' + partJugados + ';' + partGanados + ';' + partEmpatados + ';' + partPerdidos + ';' + puntos + "\n");
+            for(int i = 0; i < nombreEquipo.length(); i++){
+            if(nombreEquipo.charAt(i) == ' '){
+                nombreEquipo.replace(' ', '_');
+            }
+            }
+
+            f.write(nombreEquipo + ';' + partJugados + ';' + partGanados + ';' + partEmpatados + ';' + partPerdidos + ';' + puntos + ';' + "\n");
             f.close();
             resultado = 0;
         }
@@ -21,25 +27,20 @@ public class FicheroFutbol {
     }
     
     public String ShowTable(){
-        String informacion = " ";
-        informacion += "Nombre del equipo     Jugados     Ganados     Empatados     Perdidos     Puntos\n";
+        String informacion = "";
         try {
             FileReader f = new FileReader("liga.dat");
             BufferedReader b = new BufferedReader(f);
 
             String linea;
             while ((linea = b.readLine()) != null) {
-                informacion += linea;
-            }    
+                informacion += linea + "\n";
+            }             
             
             b.close();
 
         } catch (Exception e) {
             System.out.println("Error al leer en el fichero");
-        }
-
-        for(int i = 0; i < informacion.length(); i++){
-                informacion = informacion.replace(";", "     ");
         }
 
         return informacion;

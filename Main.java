@@ -24,7 +24,33 @@ public class Main{
                     break;
                 case 2:
                     System.out.println("La tabla de la liga es la siguiente:");
-                    System.out.println(pd.ShowTable());
+                    
+                    String informacion = pd.ShowTable();
+
+                    int longitud = 0;
+                    boolean seguir = true;
+
+                    System.out.print("Nombre del equipo     Jugados     Ganados     Empatados     Perdidos     Puntos\n");
+
+                    for(int i = 0; i < informacion.length(); i++){
+                        if(informacion.charAt(i) != ' ' || informacion.charAt(i) != '\n') longitud++;
+
+                        if(informacion.charAt(i) == '\n') seguir = true;
+
+                        if (informacion.charAt(i) == ';' && seguir == true){
+                            for(int j = 0; j < 15 - longitud + 13;j++)
+                            System.out.print(" ");
+                            longitud = 0;
+                            seguir = false;
+                        } else if(informacion.charAt(i) == ';'){
+                            System.out.print("          ");
+                        } else{
+                            System.out.print(informacion.charAt(i));
+                        }   
+                        }
+
+                    System.out.println("");
+                    
                     break;
                 case 3:
                     System.out.println("Tabla ordenada por puntos:");
@@ -46,7 +72,7 @@ public class Main{
                     break;
             }
 
-        } while(opcion < 1 || opcion > 7);
+        } while(opcion != 7);
 
     }
 
@@ -69,11 +95,12 @@ public class Main{
             int partidosPerdidos = Integer.parseInt(System.console().readLine());
 
             int puntos = partidosGanados * 3 + partidosEmpatados;
+            int resultado = pd.guardar(nombreEquipo, partidosJugados, partidosGanados, partidosEmpatados, partidosPerdidos, puntos);
 
-        if(pd.guardar(nombreEquipo, partidosJugados, partidosGanados, partidosEmpatados, partidosPerdidos, puntos) == -1){
+        if(resultado == -1){
             System.out.println("Error al guardar el equipo");
         } else {
-            pd.guardar(nombreEquipo, partidosJugados, partidosGanados, partidosEmpatados, partidosPerdidos, puntos);
+            System.out.println("Equipo guardado correctamente");
         }            
     };
 
