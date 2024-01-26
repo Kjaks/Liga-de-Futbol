@@ -1,5 +1,8 @@
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 
 public class FicheroFutbol {
@@ -124,8 +127,66 @@ public class FicheroFutbol {
                     equipo[j] = informacion[i + j];
                 }
             }
+            i = informacion.length + 1;
         }
 
         return equipo;
+    }
+
+    public int borrarEquipo(String nombreEquipo) {
+        int lineaBorrar = 0;
+        int resultado = 0;
+
+        for(int i = 0; i < informacion.length; i++){
+            if(informacion[i] != null && informacion[i].equals(nombreEquipo)){
+                if(i == 5) lineaBorrar = i;
+                else lineaBorrar = i/6;
+                i = informacion.length + 1;
+            }
+        }
+        try {
+            File archivoOriginal = new File("liga.dat");
+            File archivoTemporal = new File("temporal.txt");
+
+            BufferedReader br = new BufferedReader(new FileReader(archivoOriginal));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(archivoTemporal));
+
+            String linea;
+            boolean equipoEncontrado = false;
+
+            while ((linea = br.readLine()) != null) {
+                if (linea.contains(nombreEquipo)) {
+                    equipoEncontrado = true;
+                } else {
+                    bw.write(linea + System.lineSeparator());
+                }
+            }
+
+            br.close();
+            bw.close();
+
+            if (equipoEncontrado) {
+                if (archivoTemporal.renameTo(archivoOriginal)) {
+                    archivoTemporal.delete();
+                    resultado = 0;
+                    System.out.println("El equipo se ha borrado correctamente");
+                } else {
+                    resultado = -1;
+                    System.out.println("No se ha podido borrar el equipo");
+                }
+                } else {
+                    resultado = 1;
+                    System.out.println("No se encontró el equipo en el archivo");
+                }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return resultado;
+    }
+
+    public void modificarEquipo(){
+        
     }
 }

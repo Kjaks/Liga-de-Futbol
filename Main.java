@@ -40,6 +40,7 @@ public class Main{
                     break;
                 case 5:
                     System.out.println("Elige el equipo que quieras borrar");
+                    pd.borrarEquipo(sc.next());
                     break;
                 case 6:
                     System.out.println("Elige el equipo que quieras y modificalo!");
