@@ -1,4 +1,7 @@
 import java.io.FileWriter;
+
+import javax.sql.rowset.spi.SyncResolver;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -57,7 +60,8 @@ public class FicheroFutbol {
 
             for(int k = 0, punt = 5; k < contador; k++, punt += 6){
                 for(int j = 0; j < 1; j++){
-                    if(puntuacion[k][j] == 0 && informacion[punt] != null) puntuacion[k][j] = Integer.parseInt(informacion[punt]);
+                    if(informacion[punt] != null) puntuacion[k][0] = k;
+                    if(informacion[punt] != null) puntuacion[k][1] = Integer.parseInt(informacion[punt]);
                 }
             }
             
@@ -73,13 +77,42 @@ public class FicheroFutbol {
 
     public void ordenar() {
         ShowTable();
+        String[] ordenado = new String[120];
         
-        for(int i = 0; i < contador; i++){
-            for(int j = 0; j < 1; j++){
-                if(puntuacion[i][0] != 0)System.out.println(puntuacion[i][0]);
+        // Ordenar el array puntuacion de mayor a menor para cada fila
+        for (int i = 0; i < contador; i++) {
+            for (int j = 0; j < contador - i - 1; j++) {
+                if (puntuacion[j][1] < puntuacion[j + 1][1]) {
+                    // El metodo de ordenamiento sera el de la burbuja el ordenamiento ocurre en el bucle de dentro
+                    // ordenaremos la posicion de los indices de los equipos dependiendo de la puntuacion que tenga cada uno
+                    int indice = puntuacion[j][0];
+                    int equiPuntuacion = puntuacion[j][1];
+                    puntuacion[j][0] = puntuacion[j + 1][0];
+                    puntuacion[j][1] = puntuacion[j + 1][1];
+                    puntuacion[j + 1][0] = indice;
+                    puntuacion[j + 1][1] = equiPuntuacion;
                 }
+            }
+        }
+        
+        for (int i = 0; i < contador; i++) {
+            for (int j = 0; j < contador; j++) {
+                // Con este bucle lo que se consigue es meter en el array ordenado la informacion de cada equipo, pero claro estando ordenado
+                if (puntuacion[i][0] == j && informacion[j * 6] != null) {
+                    // Nombre del equipo
+                    ordenado[i * 6] = informacion[j * 6];
+                    // Partidos jugados
+                    ordenado[i * 6 + 1] = informacion[j * 6 + 1];
+                    // Partidos ganados
+                    ordenado[i * 6 + 2] = informacion[j * 6 + 2];
+                    // Partidos empatados
+                    ordenado[i * 6 + 3] = informacion[j * 6 + 3];
+                    // Partidos perdidos
+                    ordenado[i * 6 + 4] = informacion[j * 6 + 4];
+                    // Puntos
+                    ordenado[i * 6 + 5] = informacion[j * 6 + 5];
+                }
+            }
         }
     }
-        
-        
 }
