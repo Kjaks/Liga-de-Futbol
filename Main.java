@@ -1,11 +1,12 @@
 import java.io.*;
+import java.util.Scanner;
 
 public class Main{
     public static void main(String args[]){
         FicheroFutbol pd = new FicheroFutbol();
         int opcion = 0;
-        // En este array de Strings guardaremos la informacion de la tabla
-        String[] informacion;
+        Scanner sc = new Scanner(System.in);
+
         System.out.println("Bienvenido a la Liga de Futbol");
         
         do{
@@ -17,46 +18,25 @@ public class Main{
             System.out.println("6. Modificar un equipo");
             System.out.println("7. Salir del programa");
 
-            opcion = Integer.parseInt(System.console().readLine());
+            opcion = sc.nextInt();
 
             switch(opcion) {
                 case 1:
-                    System.out.println("Añade un equipo y sus datos a continuacion!");
+                    System.out.println("Añade un equipo y sus datos a continuacion!\n");
                     // Llamamos al método addTeam de la clase Main para añadir un equipo
                     addTeam();
                     break;
                 case 2:
-                    System.out.println("La tabla de la liga es la siguiente:\n");
-                    
-                    informacion = pd.ShowTable();
-
-                    System.out.print("Nombre del equipo     Jugados                  Ganados                  Empatados                Perdidos                  Puntos\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n");
-
-                    for (int i = 0; i < informacion.length; i++) {
-                        // En cada fila sabemos que hay como maximo 5 elementos, por lo que si i es multiplo de 6, significa que hemos llegado al final de la fila y hacemos un salto de linea
-                        // y un separador de lineas
-                        if (i % 6 == 0 && informacion[i] != null && i != 0) {
-                            System.out.println();
-                            System.out.print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n");  // Salto de línea después de cada quinto elemento
-                        }
-                        // Si no es null el elemento lo imprimeros, ocurre que los elementos visualmente quedarian descolocados, por lo que le daremos un formato
-                        // con printf para que queden alineados
-                        if (informacion[i] != null) {
-                            System.out.printf("%-25s", informacion[i]);
-                    
-
-                        }
-                    }
-
-                    System.out.println("\n");
-
+                System.out.println("La tabla de la liga es la siguiente:\n");
+                    tablaFormateada(pd.showTable());
                     break;
                 case 3:
                     System.out.println("Tabla ordenada por puntos:");
-                    pd.ordenar();
+                    tablaFormateada(pd.ordenar());
                     break;
                 case 4:
                     System.out.println("Escribe el nombre del equipo que quieres buscar:");
+                    tablaFormateada(pd.buscarEquipo(sc.next()));
                     break;
                 case 5:
                     System.out.println("Elige el equipo que quieras borrar");
@@ -124,17 +104,11 @@ public class Main{
             }
         } while(partidosEmpatados > partidosMaximos || partidosEmpatados > partidosJugados || partidosEmpatados < 0);
 
-            int partidosPerdidos = (partidosGanados + partidosEmpatados) - partidosJugados;
+            int partidosPerdidos = partidosJugados - (partidosGanados + partidosEmpatados);
 
             int puntos = partidosGanados * 3 + partidosEmpatados;
 
             int resultado = pd.guardar(nombreEquipo, partidosJugados, partidosGanados, partidosEmpatados, partidosPerdidos, puntos);
-
-        if(resultado == -1){
-            System.out.println("Error al guardar el equipo");
-        } else {
-            System.out.println("Equipo guardado correctamente");
-        }
         
         switch(resultado){
             case -1:
@@ -147,5 +121,27 @@ public class Main{
                 System.out.println("Equipo guardado correctamente");
                 break;
         }
-    };
+    }
+
+    public static void tablaFormateada(String[] info){
+        System.out.print("Nombre del equipo     Jugados                  Ganados                  Empatados                Perdidos                  Puntos\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n");
+
+        for (int i = 0; i < info.length; i++) {
+            // En cada fila sabemos que hay como maximo 5 elementos, por lo que si i es multiplo de 6, significa que hemos llegado al final de la fila y hacemos un salto de linea
+            // y un separador de lineas
+            if (i % 6 == 0 && info[i] != null && i != 0) {
+                System.out.println();
+                System.out.print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n");  // Salto de línea después de cada quinto elemento
+            }
+            // Si no es null el elemento lo imprimeros, ocurre que los elementos visualmente quedarian descolocados, por lo que le daremos un formato
+            // con printf para que queden alineados
+            if (info[i] != null) {
+                System.out.printf("%-25s", info[i]);
+        
+
+            }
+        }
+
+        System.out.println("\n");
+    }
 }

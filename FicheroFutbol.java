@@ -1,7 +1,4 @@
 import java.io.FileWriter;
-
-import javax.sql.rowset.spi.SyncResolver;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -13,7 +10,7 @@ public class FicheroFutbol {
     public int guardar(String nombreEquipo,int partJugados, int partGanados, int partEmpatados, int partPerdidos,int puntos){
         int resultado;
         contador = 0;
-        ShowTable();
+        showTable();
         try{    
             FileWriter f = new FileWriter("liga.dat",true);
 
@@ -32,7 +29,7 @@ public class FicheroFutbol {
         return resultado;
     }
     
-    public String[] ShowTable() {
+    public String[] showTable() {
         int i = 0;
         try {
             FileReader f = new FileReader("liga.dat");
@@ -75,8 +72,8 @@ public class FicheroFutbol {
         return informacion;
     }
 
-    public void ordenar() {
-        ShowTable();
+    public String[] ordenar() {
+        showTable();
         String[] ordenado = new String[120];
         
         // Ordenar el array puntuacion de mayor a menor para cada fila
@@ -114,5 +111,21 @@ public class FicheroFutbol {
                 }
             }
         }
+        return ordenado;
+    }
+
+    public String[] buscarEquipo(String nomEquipo){
+        showTable();
+        String[] equipo = new String[6];
+
+        for(int i = 0; i < informacion.length; i++){
+            if(informacion[i] != null && informacion[i].equals(nomEquipo)){
+                for(int j = 0; j < 6; j++){
+                    equipo[j] = informacion[i + j];
+                }
+            }
+        }
+
+        return equipo;
     }
 }
