@@ -53,6 +53,7 @@ public class Main{
                     break;
                 case 3:
                     System.out.println("Tabla ordenada por puntos:");
+                    pd.ordenar();
                     break;
                 case 4:
                     System.out.println("Escribe el nombre del equipo que quieres buscar:");
@@ -76,6 +77,7 @@ public class Main{
     }
 
     public static void addTeam(){
+        Main m = new Main();
         FicheroFutbol pd = new FicheroFutbol();
         // Los partidosMaximos sirven para saber hasta cuantos partidos podemos empatar sin que se se pasen de los partidos jugados
         int partidosMaximos = 0;
@@ -97,13 +99,18 @@ public class Main{
                 System.out.println("El numero de partidos ganados no puede ser mayor que el numero de partidos jugados");
             }
 
+            if(partidosGanados < 0){
+                System.out.println("El numero de partidos ganados no puede ser menor que 0");
+            }
+
             partidosMaximos = partidosJugados - partidosGanados;
 
-        } while (partidosGanados > partidosJugados);
+        } while (partidosGanados > partidosJugados || partidosGanados < 0);
 
         System.out.println("Escribe el numero de partidos empatados:");
         do{
             partidosEmpatados = Integer.parseInt(System.console().readLine());
+
             if(partidosEmpatados > partidosJugados){
                 System.out.println("El numero de partidos empatados no puede ser mayor que el numero de partidos jugados");
             }
@@ -111,7 +118,11 @@ public class Main{
             if(partidosEmpatados > partidosMaximos){
                 System.out.println("La suma de partidos jugados y empatados no puede ser mayor que el numero de partidos jugados");
             }
-        } while(partidosEmpatados > partidosMaximos || partidosEmpatados > partidosJugados);
+            
+            if(partidosEmpatados < 0){
+                System.out.println("El numero de partidos empatados no puede ser menor que 0");
+            }
+        } while(partidosEmpatados > partidosMaximos || partidosEmpatados > partidosJugados || partidosEmpatados < 0);
 
             int partidosPerdidos = (partidosGanados + partidosEmpatados) - partidosJugados;
 
@@ -123,7 +134,18 @@ public class Main{
             System.out.println("Error al guardar el equipo");
         } else {
             System.out.println("Equipo guardado correctamente");
-        }            
+        }
+        
+        switch(resultado){
+            case -1:
+                System.out.println("Error al guardar el equipo");
+                break;
+            case -2:
+                System.out.println("No se pueden guardar mas equipos");
+                break;
+            case 0:
+                System.out.println("Equipo guardado correctamente");
+                break;
+        }
     };
-
 }
