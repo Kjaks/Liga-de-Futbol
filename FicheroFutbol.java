@@ -5,8 +5,11 @@ import java.io.File;
 import java.io.FileReader;
 
 public class FicheroFutbol {
+    // Con esto podremos visualizar la tabla
     private String[] informacion = new String[120];
+    // Esta matriz es para ordenar las puntuaciones
     private int[][] puntuacion = new int[20][2];
+    // El contador es para llevar la cuenta de cuantas filas hay en el fichero
     public int contador = 0;
 
     public int guardar(String nombreEquipo,int partJugados, int partGanados, int partEmpatados, int partPerdidos,int puntos){
@@ -15,7 +18,7 @@ public class FicheroFutbol {
         try{    
             FileWriter f = new FileWriter("liga.dat",true);
 
-            if(contador > 20) resultado = -2;
+            if(contador >= 20) resultado = -2;
             else {
                 // El caracter ; es para separar los datos
                 f.write(nombreEquipo + ';' + partJugados + ';' + partGanados + ';' + partEmpatados + ';' + partPerdidos + ';' + puntos + ';' + "\n");
@@ -56,6 +59,7 @@ public class FicheroFutbol {
                 }
             } 
 
+            // En este bucle guardamos la posicion de los puntos en la matriz
             for(int k = 0, punt = 5; k < contador; k++, punt += 6){
                 for(int j = 0; j < 1; j++){
                     if(informacion[punt] != null) puntuacion[k][0] = k;
@@ -118,6 +122,8 @@ public class FicheroFutbol {
         showTable();
         String[] equipo = new String[6];
 
+        // Lo que se hace es simplemente recibir el string y cuando la posicion del nombre sea el mismo que el string recibido
+        // se meten los demas datos en el array equipo
         for(int i = 0; i < informacion.length; i++){
             if(informacion[i] != null && informacion[i].equals(nomEquipo)){
                 for(int j = 0; j < 6; j++){
@@ -134,6 +140,9 @@ public class FicheroFutbol {
         int resultado = 0;
 
         try {
+            // El funcionamiento es sencillo haremos un archivo temporal que lea y transfiera la informacion del archivo original
+            // para que cuando se llegue a la linea donde esta el equipo que queremos borrar no lo copie y cuando termine de leer
+            // el archivo original se borra y se renombra el archivo temporal con el nombre del archivo original
             File archivoOriginal = new File("liga.dat");
             File archivoTemporal = new File("temporal.txt");
 
