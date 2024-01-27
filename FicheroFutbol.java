@@ -6,17 +6,16 @@ import java.io.FileReader;
 
 public class FicheroFutbol {
     private String[] informacion = new String[120];
-    int[][] puntuacion = new int[20][2];
-    int contador = 0;
+    private int[][] puntuacion = new int[20][2];
+    public int contador = 0;
 
     public int guardar(String nombreEquipo,int partJugados, int partGanados, int partEmpatados, int partPerdidos,int puntos){
         int resultado;
-        contador = 0;
         showTable();
         try{    
             FileWriter f = new FileWriter("liga.dat",true);
 
-            if(contador == 20) resultado = -2;
+            if(contador > 20) resultado = -2;
             else {
                 // El caracter ; es para separar los datos
                 f.write(nombreEquipo + ';' + partJugados + ';' + partGanados + ';' + partEmpatados + ';' + partPerdidos + ';' + puntos + ';' + "\n");
@@ -67,8 +66,7 @@ public class FicheroFutbol {
             b.close();
 
         } catch (Exception e) {
-                System.err.println("Error al leer en el fichero: " + e.getMessage());
-                // Realizar acciones de manejo de errores adicionales aquí
+        
         }
 
         return informacion;
@@ -158,17 +156,14 @@ public class FicheroFutbol {
 
             if (equipoEncontrado) {
                 if (archivoTemporal.renameTo(archivoOriginal)) {
-                    archivoTemporal.delete();
                     resultado = 0;
-                    System.out.println("El equipo se ha borrado correctamente");
                 } else {
                     resultado = -1;
-                    System.out.println("No se ha podido borrar el equipo");
                 }
                 } else {
                     resultado = 1;
-                    System.out.println("No se encontró el equipo en el archivo");
                 }
+                archivoTemporal.delete();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -177,7 +172,4 @@ public class FicheroFutbol {
         return resultado;
     }
 
-    public void modificarEquipo(){
-
-    }
 }
