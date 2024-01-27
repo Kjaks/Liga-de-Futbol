@@ -43,7 +43,72 @@ public class Main{
                     pd.borrarEquipo(sc.next());
                     break;
                 case 6:
-                    System.out.println("Elige el equipo que quieras y modificalo!");
+                    int eleccion = 0;
+                    System.out.println("Escribe el nombre del equipo y modificalo!");
+                    String eleccionEquipo = sc.next();
+
+                    String[] equipoElegido = pd.buscarEquipo(eleccionEquipo);
+                    int[] numeros = new int[4]; 
+
+                    for(int i = 0, j = 1; i < 5; i++, j++){
+                        numeros[i] = Integer.parseInt(equipoElegido[j]);
+                    }
+
+                    tablaFormateada(equipoElegido);
+
+                        do{
+                        System.out.println("Escribe el numero de lo que quieras modificar:");
+                        eleccion = sc.nextInt();
+                        System.out.println("1. Nombre del equipo");
+                        System.out.println("2. Partidos jugados");
+                        System.out.println("3. Partidos ganados");
+                        System.out.println("4. Partidos empatados");
+                        System.out.println("5. Salir de la modificacion");
+                            if(eleccion < 1 || eleccion > 5){
+                                System.out.println("Opcion invalida");
+                            }
+                        } while(eleccion < 1 || eleccion > 5);
+
+                    switch (eleccion) {
+                        case 1:
+                            System.out.println("Nombre equipo anterior: " + equipoElegido[0]);
+                            System.out.println("Escribe el nuevo nombre del equipo:");
+                            equipoElegido[0] = sc.next();
+                            break;
+                        case 2:
+                            System.out.println("Partidos jugados anterior: " + numeros[0]);
+                            System.out.println("Escribe el nuevo numero de partidos jugados:");
+
+                            numeros[0] = sc.nextInt();
+                            numeros[3] = (numeros[1] + numeros[2]) - numeros[0];
+                            break;
+                        case 3:
+                            System.out.println("Partidos ganados anterior: " + numeros[1]);
+                            do{
+                                numeros[1] = sc.nextInt();
+                                if(numeros[1] > numeros[0]){
+                                    System.out.println("El numero de partidos ganados no puede ser mayor que el numero de partidos jugados");
+                                }
+                                if(numeros[1] < 0){
+                                    System.out.println("El numero de partidos ganados no puede ser menor que 0");
+                                }
+                                if((numeros[1] + numeros[2]) > numeros[0]){
+                                    System.out.println("La suma de partidos ganados y empatados no puede ser mayor que el numero de partidos jugados");
+                                }
+                            } while(numeros[0] < numeros[1] || (numeros[1] + numeros[2]) > numeros[0] || numeros[1] < 0);
+                            break;
+                        case 4:
+                            numeros[2] = sc.nextInt();
+                            break;
+                    }
+                    
+
+                    pd.borrarEquipo(eleccionEquipo);
+
+
+
+                    pd.guardar(equipoElegido[0], numeros[0], numeros[1], numeros[2], numeros[3], numeros[4]);
+
                     break;
                 case 7:
                     System.out.println("Saliendo del programa...");
@@ -57,7 +122,7 @@ public class Main{
 
     }
 
-    public static void addTeam(){
+    public static void addTeam(nombreEquipo, partidosJugados, partidosGanados, partidosEmpatados, partidosPerdidos,int puntos){
         Main m = new Main();
         FicheroFutbol pd = new FicheroFutbol();
         // Los partidosMaximos sirven para saber hasta cuantos partidos podemos empatar sin que se se pasen de los partidos jugados

@@ -1,7 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 
@@ -134,22 +133,14 @@ public class FicheroFutbol {
     }
 
     public int borrarEquipo(String nombreEquipo) {
-        int lineaBorrar = 0;
         int resultado = 0;
 
-        for(int i = 0; i < informacion.length; i++){
-            if(informacion[i] != null && informacion[i].equals(nombreEquipo)){
-                if(i == 5) lineaBorrar = i;
-                else lineaBorrar = i/6;
-                i = informacion.length + 1;
-            }
-        }
         try {
             File archivoOriginal = new File("liga.dat");
             File archivoTemporal = new File("temporal.txt");
 
             BufferedReader br = new BufferedReader(new FileReader(archivoOriginal));
-            BufferedWriter bw = new BufferedWriter(new FileWriter(archivoTemporal));
+            FileWriter fw = new FileWriter(archivoTemporal);
 
             String linea;
             boolean equipoEncontrado = false;
@@ -158,12 +149,12 @@ public class FicheroFutbol {
                 if (linea.contains(nombreEquipo)) {
                     equipoEncontrado = true;
                 } else {
-                    bw.write(linea + System.lineSeparator());
+                    fw.write(linea + System.lineSeparator());
                 }
             }
 
             br.close();
-            bw.close();
+            fw.close();
 
             if (equipoEncontrado) {
                 if (archivoTemporal.renameTo(archivoOriginal)) {
@@ -187,6 +178,6 @@ public class FicheroFutbol {
     }
 
     public void modificarEquipo(){
-        
+
     }
 }
