@@ -22,10 +22,53 @@ public class Main{
 
             switch(opcion) {
                 case 1:
+                    int partidosMaximos = 0;
+                    int partidosEmpatados = 0;
                     System.out.println("Añade un equipo y sus datos a continuacion!\n");
                     // Llamamos al método addTeam de la clase Main para añadir un equipo
-                    addTeam();
+                    System.out.println("Escribe el nombre del equipo:");
+                    String nombreEquipo = System.console().readLine();
+                
+                    System.out.println("Escribe el numero de partidos jugados:");
+                    int partidosJugados = Integer.parseInt(System.console().readLine());
+                    
+                    System.out.println("Escribe el numero de partidos ganados:");
+                    int partidosGanados = Integer.parseInt(System.console().readLine());
+
+                    do{
+                        
+                        if(partidosGanados > partidosJugados){
+                            System.out.println("El numero de partidos ganados no puede ser mayor que el numero de partidos jugados");
+                        }
+            
+                        if(partidosGanados < 0){
+                            System.out.println("El numero de partidos ganados no puede ser menor que 0");
+                        }
+            
+                        partidosMaximos = partidosJugados - partidosGanados;
+            
+                    } while (partidosGanados > partidosJugados || partidosGanados < 0);
+            
+                    System.out.println("Escribe el numero de partidos empatados:");
+                    do{
+                        partidosEmpatados = Integer.parseInt(System.console().readLine());
+            
+                        if(partidosEmpatados > partidosJugados){
+                            System.out.println("El numero de partidos empatados no puede ser mayor que el numero de partidos jugados");
+                        }
+            
+                        if(partidosEmpatados > partidosMaximos){
+                            System.out.println("La suma de partidos jugados y empatados no puede ser mayor que el numero de partidos jugados");
+                        }
+                        
+                        if(partidosEmpatados < 0){
+                            System.out.println("El numero de partidos empatados no puede ser menor que 0");
+                        }
+                    } while(partidosEmpatados > partidosMaximos || partidosEmpatados > partidosJugados || partidosEmpatados < 0);
+            
+                    addTeam(nombreEquipo, partidosJugados, partidosGanados, partidosEmpatados);;
                     break;
+                
                 case 2:
                 System.out.println("La tabla de la liga es la siguiente:\n");
                     tablaFormateada(pd.showTable());
@@ -50,7 +93,8 @@ public class Main{
                     String[] equipoElegido = pd.buscarEquipo(eleccionEquipo);
                     int[] numeros = new int[4]; 
 
-                    for(int i = 0, j = 1; i < 5; i++, j++){
+                    for(int i = 0, j = 1; i < 4; i++, j++){
+                        System.out.println(equipoElegido[j]);
                         numeros[i] = Integer.parseInt(equipoElegido[j]);
                     }
 
@@ -58,12 +102,13 @@ public class Main{
 
                         do{
                         System.out.println("Escribe el numero de lo que quieras modificar:");
-                        eleccion = sc.nextInt();
                         System.out.println("1. Nombre del equipo");
                         System.out.println("2. Partidos jugados");
                         System.out.println("3. Partidos ganados");
                         System.out.println("4. Partidos empatados");
                         System.out.println("5. Salir de la modificacion");
+                        eleccion = sc.nextInt();
+
                             if(eleccion < 1 || eleccion > 5){
                                 System.out.println("Opcion invalida");
                             }
@@ -78,12 +123,17 @@ public class Main{
                         case 2:
                             System.out.println("Partidos jugados anterior: " + numeros[0]);
                             System.out.println("Escribe el nuevo numero de partidos jugados:");
-
+                            do{
                             numeros[0] = sc.nextInt();
-                            numeros[3] = (numeros[1] + numeros[2]) - numeros[0];
+                            if(numeros[0] < numeros[1] + numeros[2]){
+                                System.out.println("El numero de partidos jugados no puede ser menor que 0");
+                            } 
+                            }while(numeros[0] < 0);
+
                             break;
                         case 3:
                             System.out.println("Partidos ganados anterior: " + numeros[1]);
+                            System.out.println("Escribe el nuevo numero de partidos ganados:");
                             do{
                                 numeros[1] = sc.nextInt();
                                 if(numeros[1] > numeros[0]){
@@ -92,22 +142,32 @@ public class Main{
                                 if(numeros[1] < 0){
                                     System.out.println("El numero de partidos ganados no puede ser menor que 0");
                                 }
-                                if((numeros[1] + numeros[2]) > numeros[0]){
-                                    System.out.println("La suma de partidos ganados y empatados no puede ser mayor que el numero de partidos jugados");
-                                }
-                            } while(numeros[0] < numeros[1] || (numeros[1] + numeros[2]) > numeros[0] || numeros[1] < 0);
+
+                            } while(numeros[0] < numeros[1] || numeros[1] < 0);
                             break;
+
                         case 4:
+                            System.out.println("Partidos empatados anterior: " + numeros[2]);
+                            System.out.println("Escribe el nuevo numero de partidos empatados:");
+                            do{
                             numeros[2] = sc.nextInt();
+                            if (numeros[2] > numeros[0]) {
+                                System.out.println("El numero de partidos empatados no puede ser mayor que el numero de partidos jugados");
+                                
+                            }
+                            if (numeros[2] < 0) {
+                                System.out.println("El numero de partidos empatados no puede ser menor que 0");
+                            }
+                            if (numeros[2] + numeros[1] > numeros[0]) {
+                                System.out.println("La suma de partidos jugados y empatados no puede ser mayor que el numero de partidos jugados");
+                            }
+                            } while(numeros[2] > numeros[0] || numeros[2] < 0 || (numeros[2] + numeros[1]) > numeros[0]);
                             break;
                     }
                     
-
                     pd.borrarEquipo(eleccionEquipo);
 
-
-
-                    pd.guardar(equipoElegido[0], numeros[0], numeros[1], numeros[2], numeros[3], numeros[4]);
+                    addTeam(equipoElegido[0], numeros[0], numeros[1], numeros[2]);
 
                     break;
                 case 7:
@@ -122,54 +182,9 @@ public class Main{
 
     }
 
-    public static void addTeam(nombreEquipo, partidosJugados, partidosGanados, partidosEmpatados, partidosPerdidos,int puntos){
-        Main m = new Main();
+    public static void addTeam(String nombreEquipo, int partidosJugados, int partidosGanados,int partidosEmpatados){
         FicheroFutbol pd = new FicheroFutbol();
         // Los partidosMaximos sirven para saber hasta cuantos partidos podemos empatar sin que se se pasen de los partidos jugados
-        int partidosMaximos = 0;
-        int partidosGanados = 0;
-        int partidosEmpatados = 0;
-
-        System.out.println("Escribe el nombre del equipo:");
-            String nombreEquipo = System.console().readLine();
-        
-        System.out.println("Escribe el numero de partidos jugados:");
-            int partidosJugados = Integer.parseInt(System.console().readLine());
-        
-        System.out.println("Escribe el numero de partidos ganados:");
-
-        do{
-            partidosGanados = Integer.parseInt(System.console().readLine());
-            
-            if(partidosGanados > partidosJugados){
-                System.out.println("El numero de partidos ganados no puede ser mayor que el numero de partidos jugados");
-            }
-
-            if(partidosGanados < 0){
-                System.out.println("El numero de partidos ganados no puede ser menor que 0");
-            }
-
-            partidosMaximos = partidosJugados - partidosGanados;
-
-        } while (partidosGanados > partidosJugados || partidosGanados < 0);
-
-        System.out.println("Escribe el numero de partidos empatados:");
-        do{
-            partidosEmpatados = Integer.parseInt(System.console().readLine());
-
-            if(partidosEmpatados > partidosJugados){
-                System.out.println("El numero de partidos empatados no puede ser mayor que el numero de partidos jugados");
-            }
-
-            if(partidosEmpatados > partidosMaximos){
-                System.out.println("La suma de partidos jugados y empatados no puede ser mayor que el numero de partidos jugados");
-            }
-            
-            if(partidosEmpatados < 0){
-                System.out.println("El numero de partidos empatados no puede ser menor que 0");
-            }
-        } while(partidosEmpatados > partidosMaximos || partidosEmpatados > partidosJugados || partidosEmpatados < 0);
-
             int partidosPerdidos = partidosJugados - (partidosGanados + partidosEmpatados);
 
             int puntos = partidosGanados * 3 + partidosEmpatados;

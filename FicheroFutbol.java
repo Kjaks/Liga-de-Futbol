@@ -125,8 +125,8 @@ public class FicheroFutbol {
                 for(int j = 0; j < 6; j++){
                     equipo[j] = informacion[i + j];
                 }
+                i = informacion.length + 1;
             }
-            i = informacion.length + 1;
         }
 
         return equipo;
@@ -149,7 +149,7 @@ public class FicheroFutbol {
                 if (linea.contains(nombreEquipo)) {
                     equipoEncontrado = true;
                 } else {
-                    fw.write(linea + System.lineSeparator());
+                    fw.write(linea + "\n");
                 }
             }
 
