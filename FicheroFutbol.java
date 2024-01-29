@@ -181,7 +181,8 @@ public class FicheroFutbol {
 
         return resultado;
     }
-
+    
+    // Este metodo directamente borra el archivo
     public void borrarTabla() {
         try {
             File archivo = new File("liga.dat");

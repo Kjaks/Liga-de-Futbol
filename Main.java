@@ -84,9 +84,10 @@ public class Main{
                     if(tablaOrdenada[0] == null) System.out.println("No hay equipos en la tabla");
                     else {
                         tablaFormateada(tablaOrdenada);
-                        //Ordenamos el fichero
+                        // Borraremos el fichero para cambiarlo por la tabla ordenada
                         pd.borrarTabla();
                         for(int i = 0; i < tablaOrdenada.length; i += 6){
+                            // Añadiremos fila por fila los datos. Como sabemos que en cada fila hay 6 elementos, iremos de 6 en 6.
                             if(tablaOrdenada[i] != null) addTeam(tablaOrdenada[i], Integer.parseInt(tablaOrdenada[i + 1]), Integer.parseInt(tablaOrdenada[i + 2]), Integer.parseInt(tablaOrdenada[i + 3]));
                         }
                     }
