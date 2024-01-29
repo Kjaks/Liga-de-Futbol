@@ -193,7 +193,7 @@ public class Main{
                                     System.out.println("El numero de partidos empatados no puede ser menor que 0");
                                 }
                                 if (numeros[2] + numeros[1] > numeros[0]) {
-                                    System.out.println("La suma de partidos jugados y empatados no puede ser mayor que el numero de partidos jugados");
+                                    System.out.println("La suma de partidos ganados y empatados no puede ser mayor que el numero de partidos jugados");
                                 }
                                 } while(numeros[2] > numeros[0] || numeros[2] < 0 || (numeros[2] + numeros[1]) > numeros[0]);
                                 break;
