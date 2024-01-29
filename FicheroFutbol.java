@@ -9,12 +9,12 @@ public class FicheroFutbol {
     private String[] informacion = new String[120];
     // Esta matriz es para ordenar las puntuaciones
     private int[][] puntuacion = new int[20][2];
-    // El contador es para llevar la cuenta de cuantas filas hay en el fichero
-    private int contador = 0;
+    // El contador es para llevar la cuenta de cuantas filas hay en el fichero, llamaremos al metodo getContador para saberlo
+    private int contador = getContador();
+    // Llamos al metodo showTable para que nos devuelva la informacion del fichero
 
     public int guardar(String nombreEquipo,int partJugados, int partGanados, int partEmpatados, int partPerdidos,int puntos){
         int resultado;
-        showTable();
         try{    
             FileWriter f = new FileWriter("liga.dat",true);
 
@@ -24,6 +24,7 @@ public class FicheroFutbol {
                 f.write(nombreEquipo + ';' + partJugados + ';' + partGanados + ';' + partEmpatados + ';' + partPerdidos + ';' + puntos + ';' + "\n");
                 f.close();
                 resultado = 0;
+                contador++;
             }
         }
         catch(Exception e){
@@ -174,6 +175,7 @@ public class FicheroFutbol {
                     resultado = 1;
                 }
                 archivoTemporal.delete();
+                contador--;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -190,6 +192,22 @@ public class FicheroFutbol {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int getContador(){
+    try{
+            FileReader f = new FileReader("liga.dat");
+            BufferedReader b = new BufferedReader(f);
+
+            String linea;
+            while ((linea = b.readLine()) != null) {
+                //Sirve para saber cuantas filas hay en el fichero
+                contador++;
+            }
+        } catch (Exception e) {
+    
+    }        
+        return contador;
     }
 
 }
