@@ -78,13 +78,22 @@ public class Main{
                     break;
                 case 3:
                 // Muestra la tabla formateada por orden
-                    System.out.println("Tabla ordenada por puntos:");
-                    if(pd.ordenar()[0] == null) System.out.println("No hay equipos en la tabla");
-                    else tablaFormateada(pd.ordenar());
+                System.out.println("Tabla ordenada por puntos:");
+                String[] tablaOrdenada = pd.ordenar();
+
+                    if(tablaOrdenada[0] == null) System.out.println("No hay equipos en la tabla");
+                    else {
+                        tablaFormateada(tablaOrdenada);
+                        //Ordenamos el fichero
+                        pd.borrarTabla();
+                        for(int i = 0; i < tablaOrdenada.length; i += 6){
+                            if(tablaOrdenada[i] != null) addTeam(tablaOrdenada[i], Integer.parseInt(tablaOrdenada[i + 1]), Integer.parseInt(tablaOrdenada[i + 2]), Integer.parseInt(tablaOrdenada[i + 3]));
+                        }
+                    }
                     break;
                 case 4:
                 // Busca un equipo
-                    System.out.println("Escribe el nombre del equipo que quieres buscar:");
+                System.out.println("Escribe el nombre del equipo que quieres buscar:");
                     String[] infoequipo = pd.buscarEquipo(sc.next());
                     // Si el primer elemento del array es null significa que no se ha encontrado el equipo
                     if (infoequipo[0] == null) System.out.println("No se ha encontrado el equipo");
