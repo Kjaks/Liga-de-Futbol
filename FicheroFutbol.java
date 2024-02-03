@@ -11,10 +11,9 @@ public class FicheroFutbol {
     private int[][] puntuacion = new int[20][2];
     // El contador es para llevar la cuenta de cuantas filas hay en el fichero, llamaremos al metodo getContador para saberlo
     private int contador = getContador();
-    // Llamos al metodo showTable para que nos devuelva la informacion del fichero
 
     public int guardar(String nombreEquipo,int partJugados, int partGanados, int partEmpatados, int partPerdidos,int puntos){
-        int resultado;
+        int resultado = 1;
         try{    
             FileWriter f = new FileWriter("liga.dat",true);
 
@@ -23,7 +22,6 @@ public class FicheroFutbol {
                 // El caracter ; es para separar los datos
                 f.write(nombreEquipo + ';' + partJugados + ';' + partGanados + ';' + partEmpatados + ';' + partPerdidos + ';' + puntos + ';' + "\n");
                 f.close();
-                resultado = 0;
                 contador++;
             }
         }

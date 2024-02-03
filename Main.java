@@ -233,9 +233,6 @@ public class Main{
             case -2:
                 System.out.println("No se pueden guardar mas equipos");
                 break;
-            case 0:
-                System.out.println("Equipo guardado correctamente");
-                break;
         }
     }
 
